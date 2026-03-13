@@ -5,26 +5,110 @@ date: "`r Sys.Date()`"
 output: pdf_document
 ---
 
+# Valerie's R Assignment
+Setting up the R Markdown and loading in R library.
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+rm(list = ls())
+library(tidyverse)
+library(ggplot2)
+library(tidyr)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Part I
+### _Data Inspection_
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
+# Loading in data from "data" folder and looking at column names. 
+genotypes <- read_tsv("data/fang_et_al_genotypes.txt")
+colnames(genotypes)[1:15]
+snp_position <- read_tsv("data/snp_position.txt")
+colnames(snp_position)[1:15]
 
-```{r cars}
-summary(cars)
+
+# Inspecting the data
+dim(genotypes) # 2782 rows  986 columns
+names(genotypes) # variable names 
+head(genotypes) # 1st Sample_ID, 3rd Group
+table(genotypes$Group) 
+  # maize count: ZMMIL 290, ZMMLR 1256, and ZMMMR 27 = 1573
+  # teosinte count: ZMPBA 900, ZMPIL 41, and ZMPJA 34 = 975
+
+
+dim(snp_position) # 983 rows  15 columns
+names(snp_position) # variable names
+head(snp_position) # 1st SNP_ID, 3rd Chromosome, 4th Position, etc.
+table(snp_position$Chromosome) # 6 multiple and 27 unknown
+```
+`fang_et_al_genotypes.txt`
+* There are 2782 rows and 986 columns.
+* The first 3 columns are `Sample_ID`, `JG_OTU`, and `Group`. Then the rest are SNP data (983).
+
+`snp_position.txt`
+* There are 983 rows and 15 columns.
+* The columns are named `SNP_ID`, `Chromosome`, `Position`, etc.
+
+### _Data Processing_
+`fang_et_al_genotypes.txt` 
+First, I am cutting out the groups I need for maize and teosinte.
+```{r}
+# Filtering `fang_et_al_genotypes.txt` 
+maize_genotypes <- genotypes %>% filter(Group == "ZMMIL" |
+                                        Group == "ZMMLR" |
+                                        Group == "ZMMMR" )
+teosinte_genotypes <- genotypes %>% filter(Group == "ZMPBA" |
+                                           Group == "ZMPIL" |
+                                           Group == "ZMPJA" )
+# Checking: both result is 3, which is accurate
+n_distinct(maize_genotypes$Group)
+n_distinct(teosinte_genotypes$Group) 
 ```
 
-## Including Plots
+Then I will transpose the genotype files so that columns become rows by using t() before joining.
+```{r}
+# MAIZE
+t_maize_genotypes <- as.data.frame(t(maize_genotypes))
+t_maize_genotypes <- t_maize_genotypes[-c(1,2,3),]
+dim(t_maize_genotypes) # 983 rows just like snp_position
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+# TEOSINTE
+t_teosinte_genotypes <- as.data.frame(t(teosinte_genotypes))
+t_teosinte_genotypes <- t_teosinte_genotypes[-c(1,2,3),]
+dim(t_teosinte_genotypes) # 983 rows just like snp_position
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Now I am joining snp_position to both of these genotype files.
+```{r}
+# MAIZE
+joined_maize
+
+# TEOSINTE
+joined_teosinte
+```
+
+
+
+
+For maize (Group = ZMMIL, ZMMLR, and ZMMMR in the third column of the fang_et_al_genotypes.txt file) we want 20 files in total:
+```{r}
+
+```
+
+For teosinte (Group = ZMPBA, ZMPIL, and ZMPJA in the third column of the fang_et_al_genotypes.txt file) we want 20 files in total:
+```{r}
+
+```
+
+## Part II Visualization
+
+### _SNPs per chromosome_
+What is the distribution of SNPs on and across chromosomes?
+Are there more SNP positions in maize or teosinte individuals?
+
+### _Missing data and amount of heterozygosity_
+What is the proportion of homozygous and heterozygous sites as well as missing data in each sample and each group?  
+
+### _Your own visualization_
+Visualize one other feature of the dataset. The choice is up to you!
