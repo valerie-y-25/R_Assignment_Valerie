@@ -93,7 +93,7 @@ colnames(t_teosinte_genotypes) <- teosinte_genotypes$Sample_ID
 
 Now I am cleaning snp_position and fixing the join key for genotype files.
 Assignment says files formated with 1st column is "SNP_ID", the 2nd column is "Chromosome", the 3rd column is "Position", and subsequent columns are genotype data from either maize or teosinte individuals."
-help: `?rownames_to_column` and _https://stackoverflow.com/questions/29511215/how-can-i-convert-row-names-into-the-first-column_ 
+_https://stackoverflow.com/questions/29511215/how-can-i-convert-row-names-into-the-first-column_ 
 ```{r}
 # Clean snp_position. We only want column 1, 3, 4
 cleaned_snp_position <- select(snp_position, 
@@ -105,7 +105,7 @@ t_teosinte_genotypes <- tibble::rownames_to_column(t_teosinte_genotypes, "SNP_ID
 ```
 
 Joining snp_position to both of these genotype files.
-help: `?left_join` and _https://r4ds.hadley.nz/joins.html_
+_https://r4ds.hadley.nz/joins.html_
 ```{r}
 # MAIZE
 joined_maize <- left_join(
@@ -172,7 +172,7 @@ test_chr_1_decrease <- test_chr_1 %>%
   )
 ``` 
 
-Creating a function.
+Creating a function to do all 10!
 ```{r}
 
 final_files <- function (df, chr, name){
@@ -207,7 +207,7 @@ final_files <- function (df, chr, name){
 
 ```
 
-Using `for loop` vs `lapply`.
+Using `for loop` since it's fairly short?
 ```{r}
 class(cleaned_maize$Chromosome) # characters
 
@@ -227,7 +227,8 @@ __What is the distribution of SNPs on and across chromosomes?__
 
 The graph below answers this question.
 From most to least number of SNPS are:
-Chromosome 1, 2, 5, 7, 4, 6, 8, 9, 10.
+Chromosome 1, 2, 5, 3, 7, 4, 6, 8, 9, 10.
+
 ```{r}
 # Unsure if we want Chromosome with multiple or unknown since they aren't numerically sortable.
 # This gives us number of SNP sites on each chromosome 1 through 10.
@@ -394,8 +395,8 @@ ggplot(plot_poly_position, aes(x=Position)) +
   facet_wrap( ~ Chromosome) + 
   
   labs (
-    title = "Distribution of SNP position across chromosomes",
-    x = "chromosome",
+    title = "Distribution of SNP position across chromosomes 1-10",
+    x = "position",
     y = "# of SNPs"
   ) 
 ```
