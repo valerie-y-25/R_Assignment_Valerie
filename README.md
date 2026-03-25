@@ -3,7 +3,7 @@
 
 
 ## Notes:
-* Everything should be relative paths, so the project (hopefully) all runs smoothly.
+* Everything should be relative paths.
 * Should be opened from `R_Assignment_Valerie.Rproj`.
 
 ## Directory:
@@ -15,14 +15,18 @@
 ### `final_results` folder
 
 * Contains `final_maize` and `final_teosinte` folders.
-* Those both have the files of chromosomes 1 - 10 sorted.
+* Those both have the files of chromosomes 1 - 10, sorted by increasing and decreasing position.
 * Output.
 
 ### `graphs` folder
 
-* Currently empty, eventually I will store my graphs there.
-* Right now, the `R_Markdown_Valerie.pdf` should show all the graphs.
+* My graphs from Part II are stored here.
 
-### `R_Markdown_Valerie.Rmd` is my main analysis 
+### `R_Markdown_Valerie.Rmd` is my *original* analysis 
+
+### `R_Markdown_Valerie_POST_REVIEW.Rmd` is my updated and *final* analysis
+* I added graphs to Part II, saved graphs to folder, added a few comments, and made minor edits to code.
+* `R_Markdown_Valerie_POST_REVIEW.html` - html version
+* `R_Markdown_Valerie_POST_REVIEW.pdf` - pdf version
 
 
